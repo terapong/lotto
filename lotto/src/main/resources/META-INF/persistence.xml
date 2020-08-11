@@ -12,11 +12,12 @@
 <persistence-unit name="lottoPU">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>jboss/datasources/MySqlDS</jta-data-source>
+        <class>toto.lotto.ejb.entity.Role</class>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDB103Dialect"/>
          <!-- <property name="hibernate.hbm2ddl.auto" value="create"/> -->
-         	<property name="hibernate.hbm2ddl.auto" value="update"/>
+         	<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
         <property name="hibernate.show_sql" value="true"/>
          </properties>
      </persistence-unit>
