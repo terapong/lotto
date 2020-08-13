@@ -9,7 +9,15 @@
 		<p:panel header="Draw managment" closable="true">
 		<p:ajax event="close" listener="#{menubean.handleClose}"  update=":mainCenterForm"/>
 			<p:panelGrid style="width: 100%">
-				Draw
+				<p:row>
+					<p:column>
+						<p:commandButton value="เพิ่มงวดที่จะออก" icon="ui-icon-plus"/>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+					</p:column>
+				</p:row>
 			</p:panelGrid>
 		</p:panel>
 	</ui:composition>

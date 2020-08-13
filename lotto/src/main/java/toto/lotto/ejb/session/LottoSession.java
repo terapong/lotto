@@ -16,6 +16,19 @@ public class LottoSession implements Serializable {
 	@PersistenceContext
     private EntityManager em;
 	
+	public List<LotteryDraw> getAllDraw() {
+		sql = "select * from lottery_draw";
+		return em.createNativeQuery(sql, LotteryDraw.class).getResultList();
+	}
+	
+	public LotteryDraw getLotteryDrawById(LotteryDraw l) {
+		return em.find(LotteryDraw.class, l.getId());
+	}
+	
+	public void updateLotteryDraw(List<LotteryDraw> ls) {
+		
+	}
+	
 	public List<Role> getAllRole() {
 		sql = "select * from role";
 		return em.createNativeQuery(sql, Role.class).getResultList();

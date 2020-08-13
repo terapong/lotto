@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -12,8 +12,8 @@ import org.primefaces.event.CloseEvent;
 
 
 @Named("menubean")
-//@SessionScoped
-@ApplicationScoped
+@SessionScoped
+//@ApplicationScoped
 public class MenuBean implements Serializable{
 	private static final long serialVersionUID = 1L;
 	

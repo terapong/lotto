@@ -30,4 +30,8 @@ root {
 	width: 90px;
 }
 
+.lottoBg {
+	overflow: visible !important;
+	background: transparent !important;
+}
 /* .ui-datatable table { width: auto !important; } */
