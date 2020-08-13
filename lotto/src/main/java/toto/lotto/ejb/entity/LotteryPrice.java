@@ -1,21 +1,21 @@
 package toto.lotto.ejb.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name="role")
-public class Role implements Serializable {
+@Table(name="lottery_price")
+public class LotteryPrice implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(nullable = false, name="name", length = 50)
-    private String name;
+    @Column(nullable = false, name="price", precision = 10, scale = 2, length = 14)
+    private BigDecimal price = BigDecimal.valueOf(0);
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="create_date", length=19)
@@ -24,9 +24,6 @@ public class Role implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="update_date", length=19)
     private Date updateDate;
-    
-    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
-	private List<Customer> customers;
     
     @OneToOne
     private Customer createUser;
@@ -39,12 +36,12 @@ public class Role implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public BigDecimal getPrice() {
+		return price;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPrice(BigDecimal price) {
+		this.price = price;
 	}
 
 	public Date getCreateDate() {
@@ -61,14 +58,6 @@ public class Role implements Serializable {
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
-	}
-
-	public List<Customer> getCustomers() {
-		return customers;
-	}
-
-	public void setCustomers(List<Customer> customers) {
-		this.customers = customers;
 	}
 
 	public Customer getCreateUser() {

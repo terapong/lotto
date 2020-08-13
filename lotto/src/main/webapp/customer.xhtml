@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition>
+		<p:panel header="Customer managment" closable="true">
+		<p:ajax event="close" listener="#{menubean.handleClose}"  update=":mainCenterForm"/>
+			<p:panelGrid>
+				<p:row>
+					<p:column style="text-align: center">
+						<p:selectOneMenu id="selMaster" value="#{customerbean.selectedMasterId}">
+            	<f:selectItems value="#{customerbean.roles}" var="m" itemLabel="#{m.name}" itemValue="#{m.id}"/>
+            	<p:ajax event="valueChange" listener="#{customerbean.selMasterChange}" update="tblCustomer" process="@this" />
+        </p:selectOneMenu>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<p:dataTable id="tblCustomer" var="c" value="#{customerbean.customers}" rows="10" paginator="true"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+							rowsPerPageTemplate="5,10,15">
+							<f:facet name="header">Customer</f:facet>
+							<p:column headerText="ID">
+								<h:outputText value="#{c.id}" />
+							</p:column>
+							<p:column headerText="name">
+								<h:outputText value="#{c.name}" />
+							</p:column>
+							<p:column headerText="Create date">
+								<h:outputText value="#{c.updateDate}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Update date">
+								<h:outputText value="#{c.updateDate}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column>
+							<p:commandButton value="แก้ไข" actionListener="#{customerbean.btnEditClick(c)}"
+								oncomplete="PF('newObjectDlg').show()" process="@this"
+								update=":mainCenterForm" resetValues="true" />
+							</p:column>
+							<p:column>
+								<p:commandButton value="ลบ"
+									actionListener="#{customerbean.btnDeleteClick(c)}"
+									oncomplete="PF('confirmDeleteCarDialog').show()" process="@this"
+									resetValues="true" />
+							</p:column>
+							<f:facet name="footer">
+								<p:commandButton icon="ui-icon-plus" value="เพิ่ม Customer"
+									actionListener="#{customerbean.btnNewClick}"
+									oncomplete="PF('newObjectDlg').show()" process="@this"
+									update=":mainCenterForm" resetValues="true" />
+							</f:facet>
+						</p:dataTable>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</p:panel>
+		
+		<p:confirmDialog message="คุณต้องการ ลบ ใช่หรือไม่ ?" closable="flase" header="ลบ" severity="alert" widgetVar="confirmDeleteCarDialog" appendTo="@(body)">  
+		  <p:commandButton value="ใช่" update=":mainCenterForm" onclick="PF('confirmDeleteCarDialog').hide()" actionListener="#{customerbean.confirmDeleteClick}" process="@this" ajax="true" icon="ui-icon-check"/>  
+		  <p:commandButton value="ไม่ใช่" onclick="PF('confirmDeleteCarDialog').hide()" type="button"  icon="ui-icon-closethick"/>   
+  	</p:confirmDialog>
+		
+		<p:dialog id="newObjectDlg" header="เพิ่ม  Customer"
+			widgetVar="newObjectDlg" modal="true" appendTo="@(body)"
+			width="760px" height="180px" closable="true">
+			<p:panelGrid id="panelCustomerInput">
+				<p:row>
+					<p:column><h:outputText value="ชื่อ : " /></p:column>
+					<p:column><p:inputText value="#{customerbean.selectedSlaveRow.name}" styleClass="lottoInput" required="true" requiredMessage="กรุณา ใส่ข้อมูล ชื่อลูกค้า"/></p:column>
+					<p:column><h:outputText value="นามสกุล : " /></p:column>
+					<p:column><p:inputText value="#{customerbean.selectedSlaveRow.surname}" styleClass="lottoInput" required="true" requiredMessage="กรุณา ใส่ข้อมูล นามสกุลลูกค้า"/></p:column>
+				</p:row>
+				<p:row>
+					<p:column><h:outputText value="username(เข้าระบบ) : " /></p:column>
+					<p:column><p:inputText value="#{customerbean.selectedSlaveRow.username}" styleClass="lottoInput" required="true" requiredMessage="กรุณา ใส่ข้อมูล username"/></p:column>
+					<p:column><h:outputText value="password(เข้าระบบ) : " /></p:column>
+					<p:column><p:inputText value="#{customerbean.selectedSlaveRow.password}" styleClass="lottoInput" required="true" requiredMessage="กรุณา ใส่ข้อมูล password"/></p:column>
+				</p:row>
+				<p:row>
+					<p:column><h:outputText value="username(เข้าระบบ lotto) : " /></p:column>
+					<p:column><p:inputText value="#{customerbean.selectedSlaveRow.username_lotto}" styleClass="lottoInput" required="true" requiredMessage="กรุณา ใส่ข้อมูล username lotto"/></p:column>
+					<p:column><h:outputText value="password(เข้าระบบ lotto) : " /></p:column>
+					<p:column><p:inputText value="#{customerbean.selectedSlaveRow.passwordLotto}" styleClass="lottoInput" required="true" requiredMessage="กรุณา ใส่ข้อมูล password lotto"/></p:column>
+				</p:row>
+				<p:row>
+					<p:column><h:outputText value="ID Card : " /></p:column>
+					<p:column><p:inputText value="#{customerbean.selectedSlaveRow.idCard}" styleClass="lottoInput" required="true" requiredMessage="กรุณา ใส่ข้อมูล ID Card"/></p:column>
+					<p:column><h:outputText value="เป็น Admin? : " /></p:column>
+					<p:column>
+						<p:selectBooleanCheckbox value="#{customerbean.selectedSlaveRow.admin}"/>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="2" style="text-align: center">
+						<p:commandButton value="บันทึก" icon="ui-icon-disk"
+							actionListener="#{customerbean.btnSaveClick}"
+							update="mainCenterForm" process="@this panelCustomerInput"
+							oncomplete="if (args.validationFailed) {PF('newObjectDlg').show(); } else {PF('newObjectDlg').hide(); }" />
+						<p:commandButton value="ยกเลิก" icon="ui-icon-close"
+							onclick="PF('newObjectDlg').hide()" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</p:dialog>
+	</ui:composition>
+</html>

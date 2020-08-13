@@ -13,11 +13,16 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>jboss/datasources/MySqlDS</jta-data-source>
         <class>toto.lotto.ejb.entity.Role</class>
+        <class>toto.lotto.ejb.entity.Customer</class>
+				<class>toto.lotto.ejb.entity.LotteryPrice</class>
+				<class>toto.lotto.ejb.entity.BankAccount</class>
+				<class>toto.lotto.ejb.entity.LotteryDraw</class>
+				<class>toto.lotto.ejb.entity.Booking</class>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDB103Dialect"/>
-         <!-- <property name="hibernate.hbm2ddl.auto" value="create"/> -->
-         	<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+         		<!-- <property name="hibernate.hbm2ddl.auto" value="create-drop"/> -->
+         		<property name="hibernate.hbm2ddl.auto" value="none"/>
         <property name="hibernate.show_sql" value="true"/>
          </properties>
      </persistence-unit>

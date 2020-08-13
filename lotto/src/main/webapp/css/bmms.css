@@ -26,4 +26,8 @@ root {
 	background: transparent !important;
 }
 
+.lottoInput {
+	width: 90px;
+}
+
 /* .ui-datatable table { width: auto !important; } */

@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>ระบบ บริหารจัดการรถเช่า</title>
+	<link type="text/css" rel="stylesheet" href="css/bmms.css" />
+	<link rel="shortcut icon" href="images/ssm.ico" />
+</h:head>
+<body
+	style="background: url('images/lottery-balls-cash.jpg') no-repeat; background-size: 100%;">
+	<h:form id="mainCenterForm" prependId="true">
+		<p:panelGrid style="width: 100%">
+			<f:facet name="header">
+				<h:outputText value="เริ่มต้นระบบ"	style="color: #000000; font-size:50px;" />
+			</f:facet>
+			<p:messages id="loginMsg" autoUpdate="true" showDetail="true" />
+			<p:row>
+				<p:column>
+					<p:dataTable var="r" value="#{rolebean.roles}" rows="10"	paginator="true"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+						rowsPerPageTemplate="5,10,15">
+						<f:facet name="header">Role</f:facet>
+						<p:column headerText="ID">
+							<h:outputText value="#{r.id}" />
+						</p:column>
+						<p:column headerText="name">
+							<h:outputText value="#{r.name}" />
+						</p:column>
+						<p:column headerText="Create date">
+							<h:outputText value="#{r.updateDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Update date">
+							<h:outputText value="#{r.updateDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+							</h:outputText>
+						</p:column>
+						<p:column>
+							<p:commandButton value="แก้ไข"
+								actionListener="#{rolebean.btnEditClick(r)}"
+								oncomplete="PF('newObjectDlg').show()" process="@this"
+								update=":mainCenterForm" resetValues="true" />
+						</p:column>
+						<p:column>
+							<p:commandButton value="ลบ"
+								actionListener="#{rolebean.btnDeleteClick(r)}"
+								oncomplete="PF('confirmDeleteCarDialog').show()" process="@this"
+								resetValues="true" />
+						</p:column>
+						<p:column>
+							<p:commandButton value="เพิ่ม Customer"
+								actionListener="#{customerbean.btnNewClick()}"
+								oncomplete="PF('newCustomerDlg').show()" process="@this"
+								update=":mainCenterForm" resetValues="true" />
+						</p:column>
+						<f:facet name="footer">
+							<p:commandButton icon="ui-icon-plus" value="เพิ่ม Role"
+								actionListener="#{rolebean.btnNewClick()}"
+								oncomplete="PF('newObjectDlg').show()" process="@this"
+								update=":mainCenterForm" resetValues="true" />
+						</f:facet>
+					</p:dataTable>
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column>
+					<p:dataTable var="r" value="#{customerbean.customers}" rows="10" paginator="true"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+						rowsPerPageTemplate="5,10,15">
+						<f:facet name="header">Customer</f:facet>
+						<p:column headerText="ID">
+							<h:outputText value="#{r.id}" />
+						</p:column>
+						<p:column headerText="name">
+							<h:outputText value="#{r.name}" />
+						</p:column>
+						<p:column headerText="surname">
+							<h:outputText value="#{r.surname}" />
+						</p:column>
+						<p:column headerText="admin">
+							<h:outputText value="#{r.admin}" />
+						</p:column>
+						<p:column headerText="Create date">
+							<h:outputText value="#{r.updateDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Update date">
+							<h:outputText value="#{r.updateDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+							</h:outputText>
+						</p:column>
+					</p:dataTable>
+				</p:column>
+			</p:row>
+			
+		</p:panelGrid>
+		
+	<p:confirmDialog message="คุณต้องการ ลบ ใช่หรือไม่ ?" closable="flase" header="ลบ" severity="alert" widgetVar="confirmDeleteCarDialog" appendTo="@(body)">  
+	  <p:commandButton value="ใช่" update=":mainCenterForm" onclick="PF('confirmDeleteCarDialog').hide()" actionListener="#{rolebean.confirmDeleteClick}" process="@this" ajax="true" icon="ui-icon-check"/>  
+	  <p:commandButton value="ไม่ใช่" onclick="PF('confirmDeleteCarDialog').hide()" type="button"  icon="ui-icon-closethick"/>   
+  </p:confirmDialog>
+  
+  <p:dialog id="newCustomerDlg" header="เพิ่ม  Customer"
+			widgetVar="newCustomerDlg" modal="true" appendTo="@(body)"
+			width="760px" height="180px" closable="true">
+			<p:panelGrid id="panelCustomerInput">
+				<p:row>
+					<p:column><h:outputText value="ชื่อ : " /></p:column>
+					<p:column><p:inputText value="#{customerbean.selectedSlaveRow.name}" styleClass="lottoInput" required="true" requiredMessage="กรุณา ใส่ข้อมูล ชื่อลูกค้า"/></p:column>
+					<p:column><h:outputText value="นามสกุล : " /></p:column>
+					<p:column><p:inputText value="#{customerbean.selectedSlaveRow.surname}" styleClass="lottoInput" required="true" requiredMessage="กรุณา ใส่ข้อมูล นามสกุลลูกค้า"/></p:column>
+				</p:row>
+				<p:row>
+					<p:column><h:outputText value="username(เข้าระบบ) : " /></p:column>
+					<p:column><p:inputText value="#{customerbean.selectedSlaveRow.username}" styleClass="lottoInput" required="true" requiredMessage="กรุณา ใส่ข้อมูล username"/></p:column>
+					<p:column><h:outputText value="password(เข้าระบบ) : " /></p:column>
+					<p:column><p:inputText value="#{customerbean.selectedSlaveRow.password}" styleClass="lottoInput" required="true" requiredMessage="กรุณา ใส่ข้อมูล password"/></p:column>
+				</p:row>
+				<p:row>
+					<p:column><h:outputText value="username(เข้าระบบ lotto) : " /></p:column>
+					<p:column><p:inputText value="#{customerbean.selectedSlaveRow.username_lotto}" styleClass="lottoInput" required="true" requiredMessage="กรุณา ใส่ข้อมูล username lotto"/></p:column>
+					<p:column><h:outputText value="password(เข้าระบบ lotto) : " /></p:column>
+					<p:column><p:inputText value="#{customerbean.selectedSlaveRow.passwordLotto}" styleClass="lottoInput" required="true" requiredMessage="กรุณา ใส่ข้อมูล password lotto"/></p:column>
+				</p:row>
+				<p:row>
+					<p:column><h:outputText value="ID Card : " /></p:column>
+					<p:column><p:inputText value="#{customerbean.selectedSlaveRow.idCard}" styleClass="lottoInput" required="true" requiredMessage="กรุณา ใส่ข้อมูล ID Card"/></p:column>
+					<p:column><h:outputText value="เป็น Admin? : " /></p:column>
+					<p:column>
+						<p:selectBooleanCheckbox value="#{customerbean.selectedSlaveRow.admin}"/>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="2" style="text-align: center">
+						<p:commandButton value="บันทึก" icon="ui-icon-disk"
+							actionListener="#{customerbean.btnSaveClick}"
+							update="mainCenterForm" process="@this panelCustomerInput"
+							oncomplete="if (args.validationFailed) {PF('newCustomerDlg').show(); } else {PF('newCustomerDlg').hide(); }" />
+						<p:commandButton value="ยกเลิก" icon="ui-icon-close"
+							onclick="PF('newCustomerDlg').hide()" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+	</p:dialog>
+
+		<p:dialog id="newObjectDlg" header="เพิ่ม Role"
+			widgetVar="newObjectDlg" modal="true" appendTo="@(body)"
+			width="300px" height="150px" closable="true">
+			<p:panelGrid id="panelInput">
+				<p:row>
+					<p:column><h:outputText value="Role name : " /></p:column>
+				</p:row>
+					<p:column><p:inputText value="#{rolebean.selectedRow.name}" styleClass="lottoInput" required="true" requiredMessage="กรุณา ใส่ข้อมูล Role"/></p:column>
+				<p:row>
+					
+				</p:row>
+				<p:row>
+					<p:column style="text-align: center">
+						<p:commandButton value="บันทึก" icon="ui-icon-disk"
+							actionListener="#{rolebean.btnSaveClick}"
+							update="mainCenterForm" process="@this panelInput"
+							oncomplete="if (args.validationFailed) {PF('newObjectDlg').show(); } else {PF('newObjectDlg').hide(); }" />
+						<p:commandButton value="ยกเลิก" icon="ui-icon-close"
+							onclick="PF('newObjectDlg').hide()" />
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</p:dialog>
+	</h:form>
+</body>
+</html>

@@ -7,15 +7,15 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name="role")
-public class Role implements Serializable {
+@Table(name="bank_account")
+public class BankAccount implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(nullable = false, name="name", length = 50)
-    private String name;
+    @Column(nullable = false, name="account_id", length = 20)
+    private String accountId;
     
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="create_date", length=19)
@@ -25,11 +25,12 @@ public class Role implements Serializable {
     @Column(name="update_date", length=19)
     private Date updateDate;
     
-    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
-	private List<Customer> customers;
+    @ManyToOne
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
     
-    @OneToOne
-    private Customer createUser;
+    @OneToMany(mappedBy = "bankaccount", fetch = FetchType.EAGER)
+	private List<Booking> bookings;
 
 	public Long getId() {
 		return id;
@@ -39,12 +40,12 @@ public class Role implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getAccountId() {
+		return accountId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
 	}
 
 	public Date getCreateDate() {
@@ -63,19 +64,19 @@ public class Role implements Serializable {
 		this.updateDate = updateDate;
 	}
 
-	public List<Customer> getCustomers() {
-		return customers;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setCustomers(List<Customer> customers) {
-		this.customers = customers;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
-	public Customer getCreateUser() {
-		return createUser;
+	public List<Booking> getBookings() {
+		return bookings;
 	}
 
-	public void setCreateUser(Customer createUser) {
-		this.createUser = createUser;
+	public void setBookings(List<Booking> bookings) {
+		this.bookings = bookings;
 	}
 }
